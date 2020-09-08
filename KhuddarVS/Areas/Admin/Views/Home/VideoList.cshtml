@@ -1,0 +1,291 @@
+﻿@model KhuddarVsModals.Models.KhuddarEarnToPLayVideo
+@{
+    ViewBag.title = "Earn To Play";
+}
+@await Html.PartialAsync("_datatableScripts")
+@await Html.PartialAsync("_toastLayout")
+@await Html.PartialAsync("_titleBreadView", new string[] { "Earn To Play", "Home", "" })
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="DT_load" style="width:100%" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Video Url</th>
+                                <th>Source</th>
+                                <th>Amount</th>
+                                <th>Title</th>
+                                <th>Thumbnail</th>
+                                <th>Expiry Date</th>
+                                <th>Create Date</th>
+                                <th>Status</th>
+                                <th>Deleted Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Video Url</th>
+                                <th>Source</th>
+                                <th>Amount</th>
+                                <th>Title</th>
+                                <th>Thumbnail</th>
+                                <th>Expiry Date</th>
+                                <th>Create Date</th>
+                                <th>Status</th>
+                                <th>Deleted Status</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h4>Earn to play Form</h4>
+                <p>Brand is an identifying mark burned on livestock or (especially in former times) criminals or slaves with a branding iron.</p>
+            </div>
+            <div class="card-body">
+                <form asp-action="category" id="formMain">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" style="display:none">
+                        <label asp-for="Id" class="control-label"></label>
+                        <input asp-for="Id" class="form-control" />
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="videoId" class="control-label"></label>
+                        <input asp-for="videoId" class="form-control" />
+                        <span asp-validation-for="videoId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="source" class="control-label"></label>
+                        <input asp-for="source" class="form-control" />
+                        <span asp-validation-for="source" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="amount" class="control-label"></label>
+                        <input asp-for="amount" class="form-control" />
+                        <span asp-validation-for="amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="title" class="control-label"></label>
+                        <input asp-for="title" class="form-control" />
+                        <span asp-validation-for="title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="thumbnail" class="control-label"></label>
+                        <input asp-for="thumbnail" class="form-control" />
+                        <span asp-validation-for="thumbnail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="expiryDate" class="control-label"></label>
+                        <input asp-for="expiryDate" class="form-control" />
+                        <span asp-validation-for="expiryDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input onclick="setStatusVal()" class="form-check-input" asp-for="status" /> @Html.DisplayNameFor(model => model.status)
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <input id="btnSubmit" type="button" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    var dataTable;
+
+    function setStatusVal() {
+        let valStatus = $("#status").val();
+        if (valStatus == "true") {
+            $("#status").val(false);
+        }
+        else {
+            $("#status").val(true);
+        }
+    }
+    $("#btnSubmit").click(function () {
+
+        let categories = {
+            videoId: $("#videoId").val(),
+            source: $("#source").val(),
+            Id: $("#Id").val(),
+            amount: $("#amount").val(),
+            title: $("#title").val(),
+            thumbnail: $("#thumbnail").val(),
+            expiryDate: $("#expiryDate").val(),
+            status: $("#status").val(),
+
+            deleteStatus: false
+
+        }
+        $.ajax({
+            type: "POST",
+            url: "/api/updatevideo",
+            headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify(categories),
+            contentType: "application/json",
+            success: function (response) {
+                toastr.success("Record Updated successfully", "Success!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+                $('#DT_load').DataTable().ajax.reload();
+
+
+
+            },
+            failure: function (response) {
+                toastr.error("Opps Something wen't wrong", "Error!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+
+                //alert(response.responseText);
+            },
+            error: function (response) {
+                toastr.error("Opps Something wen't wrong", "Error!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+            }
+        });
+
+
+    });
+
+    $(document).ready(function () {
+
+        dataTable = $("#DT_load").DataTable({
+            "ajax": {
+                "url": "/Api/getVideo",
+                "type": "GET",
+                "datatype": "Json",
+                "dataSrc": ""
+            },
+
+            "columns": [
+
+                /*
+                {
+                    "data": "category",
+                    "render": function (data, type, row, meta) {
+                        console.log(data)
+                        return `${data["productType"]}`
+                    }, "width": "33.3%"
+                },
+                */
+                { "data": "videoId", "width": "33.3%" },
+                { "data": "source", "width": "33.3%" },
+                { "data": "amount", "width": "33.3%" },
+                { "data": "title", "width": "33.3%" },
+                { "data": "thumbnail", "width": "33.3%" },
+                { "data": "expiryDate", "width": "33.3%" },
+                { "data": "date", "width": "33.3%" },
+                {
+                    "data": "status",
+                    "render": function (data) {
+                        return (data == true ? "	Available" : "Not Available")
+                    },
+                    "width": "33.3%"
+                },
+                {
+                    "data": "deleteStatus",
+                    "render": function (data) {
+                        return (data == false ? "Active" : "Deleted")
+                    },
+                    "width": "33.3%"
+                },
+                {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        return `<div class="d-flex justify-content-center"> <a class="btn btn-warning" style=" color: white; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" href="/admin/VideoList/${data}">Edit</a> <a class="btn btn-danger" style=" color: white; border-radius: 0px;" onclick="deletebrand(${data},'${row.title}')">Delete</a> <a href="/admin/home/subCategory/${data}" class="btn btn-info" style=" border-top-left-radius: 0px; border-bottom-left-radius: 0px; color: white;  ">View</a> </div>`
+                    },
+                    "width": "33.3%",
+                }
+            ],
+            "language": {
+                "brandsTable": "No data found"
+            },
+            "width": "100%",
+        });
+
+
+    });
+    function deletebrand(val, Name) {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0CC27E',
+            cancelButtonColor: '#FF586B',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-success mr-5',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: `/api/deleteVideo?id=${val}`,
+                type: "GET",
+                datatype: "JSON",
+                data: '',
+                success: function (result) {
+                    switch (result) {
+
+                        case 1:
+                            {
+                                swal('Deleted!', `Category ${Name} has been deleted.`, 'success');
+                                dataTable.ajax.reload();
+                                break;
+                            }
+                        default:
+                            {
+                                swal('Error!', 'Opps something went wrong', 'error');
+                                break;
+
+                            }
+
+                    }
+                },
+                error: function (result) {
+                    swal('Error!', 'Opps something went wrong', 'error');
+
+                },
+            });
+
+        }, function (dismiss) {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
+                swal('Cancelled', `Brand ${Name} is safe :)`, 'error');
+            }
+        });
+    };
+
+
+
+
+</script>
+
+

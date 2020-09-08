@@ -1,0 +1,363 @@
+﻿@model KhuddarVsModals.Models.KhuddarQuiz
+@{
+    ViewBag.title = "Categories";
+}
+@await Html.PartialAsync("_datatableScripts")
+@await Html.PartialAsync("_toastLayout")
+@await Html.PartialAsync("_titleBreadView", new string[] { "Quiz Categories", "Home", "" })
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="DT_load" style="width:100%" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Question</th>
+                                <th>Amount</th>
+                                <th>Duration</th>
+                                <th>Date</th>
+                                <th>Answers</th>
+                                <th>Available</th>
+                                <th>Delete Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Category</th>
+                                <th>Question</th>
+                                <th>Amount</th>
+                                <th>Duration</th>
+                                <th>Date</th>
+                                <th>Answers</th>
+                                <th>Available</th>
+                                <th>Delete Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5 col-12">
+        <div class="card">
+            <div class="card-header">
+                Question
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-12 form-group mb-3 display-none">
+                        <label asp-for="Id"></label>
+                        <input asp-for="Id" class="form-control" placeholder="Input Quiz Question"/>
+                    </div>
+
+                    <div class="col-md-6 col-12 form-group mb-3">
+                        <label asp-for="Category"></label>
+                        <select asp-for="Category" class="form-control" asp-items="@(new SelectList(ViewBag.Categories,"Id","Category"))"></select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 col-12 form-group mb-3">
+                        <label asp-for="Question"></label>
+                        <textarea asp-for="Question" class="form-control" placeholder="Input Quiz Question"></textarea>
+                    </div>
+                    <div class="col-md-6 col-12 form-group mb-3">
+                        <label asp-for="Amount"></label>
+                        <input asp-for="Amount" class="form-control" type="number" placeholder="Enter Question Winning Ammount" />
+                        <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                    </div>
+                    <div class="col-md-6 col-12 form-group mb-3">
+                        <label asp-for="Time"></label>
+                        <input asp-for="Time" class="form-control" type="number" placeholder="Enter Question Duration In Seconds" />
+                    </div>
+
+
+                    <div class="col-md-6 col-12 form-group mb-3">
+                        <label asp-for="date"></label>
+                        <input asp-for="date" type="date" class="form-control" />
+                    </div>
+                    <div class="col-md-6 col-12 form-group mb-3 mt-4">
+                        <label class="checkbox checkbox-primary">
+                            <input onclick="setStatusVal()" type="checkbox" id="status" value="true" checked="checked" /><span>@Html.DisplayNameFor(model => model.status)</span><span class="checkmark"></span>
+                        </label>
+
+                    </div>
+
+                    <div class="col-md-6 col-12 form-group mb-3" style="display:none">
+                        <label asp-for="HasVideo"></label>
+                        <br />
+                        <label class="switch pr-5 switch-primary mr-3 mt-1">
+                            <span>Contain Video</span>
+                            <input asp-for="HasVideo" type="checkbox" onchange="handleContain()" /><span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-6 col-12 form-group mb-3 display-none" id="questionVideo">
+                        <label asp-for="VideoLink"></label>
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" id="customFile" name="filename">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                Answers
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @if (Model != null)
+                    {
+                        var i = 1;
+
+                        foreach (var item in Model.KhuddarQuizAnswers)
+                        {
+                            <div class="col-md-6 col-12 form-group mb-3">
+                                <label asp-for="KhuddarQuizAnswers.FirstOrDefault().Answer">
+                                </label>
+                                <input id="@item.Id" class="form-control quiz-ans" value="@item.Answer" placeholder="Enter Question Answer" />
+                                <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                <label class="radio radio-primary mt-4">
+                                    <input type="radio" class="rdio" name="radio" value=@(Model.CorrectAnswer==i?"1":"0") @(Model.CorrectAnswer==i?"checked":"") /><span>Make Correct Answer</span><span class="checkmark"></span>
+                                </label>
+                            </div>
+                            i++;
+                        }
+                    }
+                    <div class="col-md-12">
+                        <input id="btnSubmit" type="button" value="Save" class="btn btn-primary" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+
+    var dataTable;
+
+    function setStatusVal() {
+        let valStatus = $("#status").val();
+        if (valStatus == "true") {
+            $("#status").val(false);
+        }
+        else {
+            $("#status").val(true);
+        }
+    }
+    $("#btnSubmit").click(function () {
+        let correctAns=1;
+        for (let i = 0; i < 4; ++i) {
+            let Ans = document.getElementsByClassName("rdio");
+            if (Ans[i] && Ans[i].hasAttribute("checked")) {
+                correctAns = i + 1;
+                break;
+            }
+        }
+
+        console.log($("#Category option:selected").attr("id"))
+        let categories = {
+            Id: $("#Id").val(),
+            Question: $("#Question").val(),
+            Amount: $("#Amount").val(),
+            Time: $("#Time").val(),
+            date: $("#date").val(),
+            Category: 1,
+            CorrectAnswer: correctAns,
+            deleteStatus: false
+        }
+        console.log(categories);
+        /*
+        $.ajax({
+            type: "POST",
+            url: "/api/updatecategory",
+            headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify(categories),
+            contentType: "application/json",
+            success: function (response) {
+                toastr.success("Record Updated successfully", "Success!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+                $('#DT_load').DataTable().ajax.reload();
+
+
+
+            },
+            failure: function (response) {
+                toastr.error("Opps Something wen't wrong", "Error!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+
+                //alert(response.responseText);
+            },
+            error: function (response) {
+                toastr.error("Opps Something wen't wrong", "Error!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+            }
+        });
+        */
+
+    });
+    function getActiveStatus(i,j) {
+
+        if (i==j)
+            return "active";
+
+        return "";
+
+    }
+
+    $(document).ready(function () {
+
+        dataTable = $("#DT_load").DataTable({
+            "ajax": {
+                "url": "/Api/quizComplete",
+                "type": "GET",
+                "datatype": "Json",
+                "dataSrc": ""
+            },
+
+            "columns": [
+
+                /*
+                {
+                    "data": "category",
+                    "render": function (data, type, row, meta) {
+                        console.log(data)
+                        return `${data["productType"]}`
+                    }, "width": "33.3%"
+                },
+                */
+                {
+                    "data": "khuddarQuizCategory",
+                    "render": function (data, type, row, meta) {
+
+                        return data.category;
+                    },
+                    "width": "33.3%",
+                },
+                { "data": "question", "width": "33.3%" },
+                { "data": "amount", "width": "33.3%" },
+                { "data": "time", "width": "33.3%" },
+                { "data": "date", "width": "33.3%" },
+                {
+                    "data": "khuddarQuizAnswers",
+                    "render": function (data, type, row, meta) {
+                        console.log(data);
+                        let dataReturn = ' <div class="btn-group"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Answers</button><div class="dropdown-menu bg-transparent shadow-none p-0 m-0" style="width: 320px"><ul class="list-group list-group-flush" style="width:180px;overflow:scroll">';
+
+                        for (let i = 0; i < data.length; ++i) {
+                            dataReturn += `<li class="list-group-item ${getActiveStatus(i + 1, row.correctAnswer)} ">${data[i].answer}</li>`
+                        }
+                        dataReturn += '</ul></div></div>';
+                        return dataReturn;
+                    },
+                    "width": "33.3%",
+                },
+                {
+                    "data": "status",
+                    "render": function (data) {
+                        return (data == true ? "	Available" : "Not Available")
+                    },
+                    "width": "33.3%"
+                },
+                {
+                    "data": "deleteStatus",
+                    "render": function (data) {
+                        return (data == false ? "Active" : "Deleted")
+                    },
+                    "width": "33.3%"
+                },
+                {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        return `<div class="d-flex justify-content-center"> <a class="btn btn-warning" style=" color: white; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" href="/admin/Quizes/${data}">Edit</a> <a class="btn btn-danger" style=" color: white; border-radius: 0px;" onclick="deletebrand(${data},'${row.category}')">Delete</a> <a href="/admin/home/subCategory/${data}" class="btn btn-info" style=" border-top-left-radius: 0px; border-bottom-left-radius: 0px; color: white;  ">View</a> </div>`
+                    },
+                    "width": "33.3%",
+                }
+            ],
+            "language": {
+                "brandsTable": "No data found"
+            },
+            "width": "100%",
+        });
+
+
+    });
+    function deletebrand(val, Name) {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0CC27E',
+            cancelButtonColor: '#FF586B',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-success mr-5',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: `/api/deleteCategory?id=${val}`,
+                type: "GET",
+                datatype: "JSON",
+                data: '',
+                success: function (result) {
+                    switch (result) {
+
+                        case 1:
+                            {
+                                swal('Deleted!', `Category ${Name} has been deleted.`, 'success');
+                                dataTable.ajax.reload();
+                                break;
+                            }
+                        default:
+                            {
+                                swal('Error!', 'Opps something went wrong', 'error');
+                                break;
+
+                            }
+
+                    }
+                },
+                error: function (result) {
+                    swal('Error!', 'Opps something went wrong', 'error');
+
+                },
+            });
+
+        }, function (dismiss) {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
+                swal('Cancelled', `Brand ${Name} is safe :)`, 'error');
+            }
+        });
+    };
+
+
+
+
+</script>
+
+

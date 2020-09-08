@@ -1,0 +1,54 @@
+﻿@model KhuddarVsModals.Models.Shadi_Mubarak.KhuddarRentAHappyCar
+@{
+    ViewBag.title = "Happy Rent A Car";
+}
+@await Html.PartialAsync("_titleBreadView", new string[] { "Happy Rent A Car Details", "Home", "Happy Rent A Car Details" })
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" class="userImg-200" />
+            <h2>@Model.KhuddarUser.Name</h2>
+            <h2>@Model.KhuddarUser.Email</h2>
+        </div>
+        <div class="container mt-3">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.BrideName)</th>
+                            <td>@Model.BrideName</td>
+                        </tr><tr>
+                            <th>@Html.DisplayNameFor(x => Model.GroomName)</th>
+                            <td>@Model.GroomName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.RentACarName)</th>
+                            <td>@Model.RentACarName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.RentACarLocation)</th>
+                            <td>@Model.RentACarLocation</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.servicesDetails)</th>
+                            <td>@Model.servicesDetails</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.Amount)</th>
+                            <td>@Model.Amount</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.DateTime)</th>
+                            <td>@Model.DateTime.ToString("dd-MM-yyyy")</td>
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

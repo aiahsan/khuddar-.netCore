@@ -1,0 +1,18 @@
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\bin\Debug\netcoreapp3.1\KhuddarVsModals.deps.json
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\bin\Debug\netcoreapp3.1\KhuddarVsModals.dll
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\bin\Debug\netcoreapp3.1\KhuddarVsModals.pdb
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.csprojAssemblyReference.cache
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.AssemblyInfoInputs.cache
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.AssemblyInfo.cs
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.csproj.CoreCompileInputs.cache
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.dll
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.pdb
+F:\Office Projects\KhuddarVS\KhuddarVsModals\bin\Debug\netcoreapp3.1\KhuddarVsModals.deps.json
+F:\Office Projects\KhuddarVS\KhuddarVsModals\bin\Debug\netcoreapp3.1\KhuddarVsModals.dll
+F:\Office Projects\KhuddarVS\KhuddarVsModals\bin\Debug\netcoreapp3.1\KhuddarVsModals.pdb
+F:\Office Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.csprojAssemblyReference.cache
+F:\Office Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.AssemblyInfoInputs.cache
+F:\Office Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.AssemblyInfo.cs
+F:\Office Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.csproj.CoreCompileInputs.cache
+F:\Office Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.dll
+F:\Office Projects\KhuddarVS\KhuddarVsModals\obj\Debug\netcoreapp3.1\KhuddarVsModals.pdb

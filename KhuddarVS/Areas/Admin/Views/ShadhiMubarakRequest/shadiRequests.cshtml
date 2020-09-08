@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.title = "Valima";
+}
+@await Html.PartialAsync("_datatableScripts")
+@await Html.PartialAsync("_toastLayout")
+@await Html.PartialAsync("_titleBreadView", new string[] { "Valima services items", "Home", "" })
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="DT_load" style="width:100%" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>User</th>
+                                <th>Total Services Request</th>
+                                <th>Requests</th>
+                                <th>User Details</th>
+
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Image</th>
+                                <th>User</th>
+                                <th>Total Services Request</th>
+                                <th>Requests</th>
+                                <th>User Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+
+<script>
+
+    var dataTable;
+
+
+    function getRequestsButtons(row) {
+        let button = '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">';
+        if (row.alNikkahs != null) {
+            button += '<a class="dropdown-item" href=' + '/ShadhiMubarak/details/Alnikkah/' + row.alNikkahs.id+' target="_blank">Al Nikkah</a>'
+        }
+        if (row.barat != null) {
+            button += '<a class="dropdown-item" href=' + '/ShadhiMubarak/details/Barat/' + row.barat.id +' target="_blank">Barat</a>'
+        }
+        if (row.foodandFoods != null) {
+            button += '<a class="dropdown-item" href=' + '/ShadhiMubarak/details/foodandfood/' + row.foodandFoods.id +' target="_blank">Food And Food</a>'
+        }
+        if (row.furnitures != null) {
+            button += '<a class="dropdown-item" href=' + '/ShadhiMubarak/details/furniture/' + row.furnitures.id +' target="_blank">Furniture</a>'
+        }
+        if (row.groomSalons != null) {
+            button += '<a class="dropdown-item" href=' + '/ShadhiMubarak/details/groomsaloon/' + row.groomSalons.id +' target="_blank">Groom Saloon</a>'
+        }
+        if (row.marrigeBanquets != null) {
+            button += '<a class="dropdown-item" href=' + '/ShadhiMubarak/details/rentahappycar/' + row.marrigeBanquets.id +' target="_blank">Marrige Banquet</a>'
+        }
+        if (row.rentAHappyCars != null) {
+            button += '<a class="dropdown-item" href=' + '/ShadhiMubarak/details/valima/' + row.rentAHappyCars.id +' target="_blank">Rent A Happy Car</a>'
+        }
+        
+        button += '</div >'
+        return button;
+       }
+    $(document).ready(function () {
+
+        dataTable = $("#DT_load").DataTable({
+            "ajax": {
+                "url": "/api/shadhiRequests/get",
+                "type": "GET",
+                "datatype": "Json",
+                "dataSrc": ""
+            },
+
+            "columns": [
+
+                /*
+                {
+                    "data": "category",
+                    "render": function (data, type, row, meta) {
+                        console.log(data)
+                        return `${data["productType"]}`
+                    }, "width": "33.3%"
+                },
+
+                {
+                    "data": "status",
+                    "render": function (data) {
+                        return (data == true ? "	Available" : "Not Available")
+                    },
+                    "width": "33.3%"
+                },
+                {
+                    "data": "deleteStatus",
+                    "render": function (data) {
+                        return (data == false ? "Active" : "Deleted")
+                    },
+                    "width": "33.3%"
+                },
+                */
+              
+             
+                {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        return `<div></div>`
+                    },
+                    "width": "33.3%",
+                }, {
+                    "data": "name",
+                    "render": function (data, type, row, meta) {
+                        return `<div>${data}</div>`
+                    },
+                    "width": "33.3%",
+                }, {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        let tServices = 0;
+                        if (row.alNikkahs != null) {
+                            tServices += 1;
+                        }
+                        if (row.barat != null) {
+                            tServices += 1;
+                        }
+                        if (row.foodandFoods != null) {
+                            tServices += 1;
+                        }
+                        if (row.furnitures != null) {
+                            tServices += 1;
+                        }
+                        if (row.groomSalons != null) {
+                            tServices += 1;
+                        }
+                        if (row.marrigeBanquets != null) {
+                            tServices += 1;
+                        }
+                        if (row.rentAHappyCars != null) {
+                            tServices += 1;
+                        }
+                        return `<div>${tServices}</div>`
+                    },
+                    "width": "33.3%",
+                }, {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        return `<div class="dropdown">
+   <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   View
+   </button>
+   ${getRequestsButtons(row)}
+</div>`  },
+                    "width": "33.3%",
+                }, {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        console.log(row)
+                        return `<div><a class="btn btn-primary" href="#" target="_blank">View</a></div>`},
+                    "width": "33.3%",
+                }
+            ],
+            "language": {
+                "brandsTable": "No data found"
+            },
+            "width": "100%",
+        });
+
+
+    });
+
+
+
+
+</script>
+
+

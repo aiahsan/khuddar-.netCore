@@ -1,0 +1,40 @@
+﻿@model KhuddarVsModals.Models.Shadi_Mubarak.KhuddarValima
+@{
+    ViewBag.title = "Valima";
+}
+@await Html.PartialAsync("_titleBreadView", new string[] { "Valima Details", "Home", "Valima Details" })
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" class="userImg-200" />
+            <h2>@Model.KhuddarUser.Name</h2>
+            <h2>@Model.KhuddarUser.Email</h2>
+        </div>
+        <div class="container mt-3">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.BrideName)</th>
+                            <td>@Model.BrideName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.GroomName)</th>
+                            <td>@Model.GroomName</td>
+                        </tr>
+                       
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.valimaDate)</th>
+                            <td>@Model.valimaDate.ToString("dd-MM-yyyy")</td>
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

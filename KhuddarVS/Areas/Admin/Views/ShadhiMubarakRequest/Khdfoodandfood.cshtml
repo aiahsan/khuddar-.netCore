@@ -1,0 +1,51 @@
+﻿@model KhuddarVsModals.Models.Shadi_Mubarak.KhuddarFoodandFood
+@{
+    ViewBag.title = "Food and Food";
+}
+@await Html.PartialAsync("_titleBreadView", new string[] { "Food and Food Details", "Home", "Barat Details" })
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" class="userImg-200" />
+            <h2>@Model.KhuddarUser.Name</h2>
+            <h2>@Model.KhuddarUser.Email</h2>
+        </div>
+        <div class="container mt-3">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.GroomName)</th>
+                            <td>@Model.GroomName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.KitchenName)</th>
+                            <td>@Model.KitchenName</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.KitchenLocation)</th>
+                            <td>@Model.KitchenLocation</td>
+                        </tr>
+                         <tr>
+                            <th>@Html.DisplayNameFor(x => Model.servicesDetails)</th>
+                            <td>@Model.servicesDetails</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.Amount)</th>
+                            <td>@Model.Amount</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => Model.DateTime)</th>
+                            <td>@Model.DateTime.ToString("dd-MM-yyyy")</td>
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

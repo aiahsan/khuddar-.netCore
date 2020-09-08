@@ -1,0 +1,369 @@
+﻿@model KhuddarVsModals.Models.KhuddarQuiz
+@{
+    ViewData["Title"] = "Quiz";
+}
+<style>
+    .display-none {
+        display: none;
+    }
+</style>
+
+@await Html.PartialAsync("_toastLayout")
+@await Html.PartialAsync("_titleBreadView", new string[] { "Quiz Category", "Home", "" })
+
+
+<form method="post" asp-action="">
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header">
+                    Question
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="Category"></label>
+                            <select asp-for="Category" class="form-control" asp-items="@(new SelectList(ViewBag.Categories,"Id","Category"))"></select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="Question"></label>
+                            <textarea asp-for="Question" class="form-control" placeholder="Input Quiz Question"></textarea>
+                        </div>
+                        <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="Amount"></label>
+                            <input asp-for="Amount" class="form-control" type="number" placeholder="Enter Question Winning Ammount" />
+                            <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                        </div>
+                        <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="Time"></label>
+                            <input asp-for="Time" class="form-control" type="number" placeholder="Enter Question Duration In Seconds" />
+                        </div>
+
+
+                        <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="date"></label>
+                            <input asp-for="date" type="date" class="form-control" />
+                        </div>
+                        <div class="col-md-6 col-12 form-group mb-3 mt-4">
+                            <label class="checkbox checkbox-primary">
+                                <input onclick="setStatusVal()" type="checkbox" id="status" value="true" checked="checked" /><span>@Html.DisplayNameFor(model => model.status)</span><span class="checkmark"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="col-md-6 col-12 form-group mb-3" style="display:none">
+                            <label asp-for="HasVideo"></label>
+                            <br />
+                            <label class="switch pr-5 switch-primary mr-3 mt-1">
+                                <span>Contain Video</span>
+                                <input asp-for="HasVideo" type="checkbox" onchange="handleContain()" /><span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-6 col-12 form-group mb-3 display-none" id="questionVideo">
+                            <label asp-for="VideoLink"></label>
+                            <div class="custom-file mb-3">
+                                <input type="file" class="custom-file-input" id="customFile" name="filename">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    Answers
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12 form-group mb-3">
+
+
+                            <label asp-for="KhuddarQuizAnswers.FirstOrDefault().Answer">
+                            </label>
+                            <input id="answer1" class="form-control" placeholder="Enter Question Answer" />
+                            <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                            <label class="radio radio-primary mt-4">
+                                <input type="radio" name="radio" value="0" /><span>Make Correct Answer</span><span class="checkmark"></span>
+                            </label>
+                        </div> <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="KhuddarQuizAnswers.FirstOrDefault().Answer"></label>
+                            <input id="answer2" class="form-control" placeholder="Enter Question Answer" />
+                            <label class="radio radio-secondary mt-4">
+                                <input type="radio" name="radio" value="1" /><span>Make Correct Answer</span><span class="checkmark"></span>
+                            </label>
+
+                            <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                        </div> <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="KhuddarQuizAnswers.FirstOrDefault().Answer"></label>
+                            <input id="answer3" class="form-control" placeholder="Enter Question Answer" />
+                            <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                            <label class="radio radio-success mt-4">
+                                <input type="radio" name="radio" value="2" /><span>Make Correct Answer</span><span class="checkmark"></span>
+                            </label>
+
+                        </div> <div class="col-md-6 col-12 form-group mb-3">
+                            <label asp-for="KhuddarQuizAnswers.FirstOrDefault().Answer"></label>
+                            <input id="answer4" class="form-control" placeholder="Enter Question Answer" />
+                            <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                            <label class="radio radio-warning mt-4">
+                                <input type="radio" name="radio" value="3" /><span>Make Correct Answer</span><span class="checkmark"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <input id="btnadd" type="button" value="Add" class="btn btn-primary" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header">
+                    Questions
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tableCategories">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Question</th>
+                                    <th>Amount</th>
+                                    <th>Duration</th>
+                                    <th>Date</th>
+                                    <th>Answers</th>
+                                    <th>Available</th>
+                                    <th>Action</th>
+                                    <th style="display:none"></th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="btnSubmit" class="btn btn-dark">Submit</button>
+        </div>
+    </div>
+</form>
+<script>
+    //0:add 1:edit
+    var mode = 0;
+    var editNode;
+    function deletenode(val) {
+        $(val.parentNode.parentNode.parentNode).remove();
+
+    }
+    function setStatusVal() {
+        let valStatus = $("#status").val();
+
+        if (valStatus == "true") {
+
+            $("#status").val(false);
+        }
+        else {
+            $("#status").val(true);
+        }
+        console.log(valStatus)
+    }
+    function getStatus() {
+        if ($("#status").val() == "true")
+            return "Available"
+
+        return "Not Available"
+
+    }
+    function setNode(node) {
+        editNode = node.parentNode.parentNode.parentNode;
+        console.log(editNode)
+        mode = 1;
+        $("#Category").val(editNode.children[8].innerText);
+        $("#Question").val(editNode.children[1].innerText);
+        $("#Amount").val(editNode.children[2].innerText);
+        $("#Time").val(editNode.children[3].innerText);
+        let answers = editNode.children[5].children[0].children[1].children[0];
+
+        $("#answer1").val(answers.children[0].innerText);
+        $("#answer2").val(answers.children[1].innerText);
+        $("#answer3").val(answers.children[2].innerText);
+        $("#answer4").val(answers.children[3].innerText);
+
+        for (let z = 0; z < answers.children.length; ++z) {
+            if ($(answers.children[z]).hasClass("active")) {
+                $(document.getElementsByName("radio")[z]).prop("checked", "true");
+            }
+        }
+
+        if (editNode.children[6].innerText == "Available") {
+            $("#status").val("true");
+            $("#status").prop("checked", true);
+        }
+        else {
+            $("#status").val("false");
+            $("#status").prop("checked", false);
+
+        }
+        $("#btnadd").val("Save");
+
+
+    }
+
+    function getActiveStatus(i) {
+
+        let radiobox = document.getElementsByName("radio");
+        if ($(radiobox[i]).prop("checked"))
+            return "active";
+
+        return "";
+
+    }
+    $(document).ready(function () {
+
+
+        //function will be called on button click having id btnsave
+
+        $("#btnadd").click(function () {
+
+            if (mode == 0) {
+                $("#tableCategories tbody").append(`
+                           <tr>
+<td>${$("#Category option:selected").text()}</td>
+<td>${$("#Question").val()}</td>
+<td>${$("#Amount").val()}</td>
+<td>${$("#Time").val()}</td>
+<td>${$("#date").val()}</td>
+<td>
+<div class="btn-group">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Answers
+
+                            </button>
+                            <div class="dropdown-menu bg-transparent shadow-none p-0 m-0" style="width: 320px">
+                                <ul class="list-group list-group-flush" style="width:180px;overflow:scroll">
+                                    <li class="list-group-item ${getActiveStatus(0)}">${$("#answer1").val()}</li>
+                                    <li class="list-group-item ${getActiveStatus(1)}">${$("#answer2").val()}</li>
+                                    <li class="list-group-item ${getActiveStatus(2)}">${$("#answer3").val()}</li>
+                                    <li class="list-group-item ${getActiveStatus(3)}">${$("#answer4").val()}</li>
+                                </ul>
+                            </div>
+                        </div>
+</td>
+
+
+<td>${getStatus()}</td >
+<td>
+<div style="display:flex;"><button type="button" class="btn btn-info" style="color: white;border-top-right-radius: 0px;border-bottom-right-radius: 0px;" onclick="setNode(this)">Edit</button>
+
+<button class="btn btn-danger" style="color: white;border-top-left-radius: 0px;border-bottom-left-radius: 0px;" onclick="deletenode(this)">Delete</button>
+</div>
+ </td>
+                                <td style="display:none">${$("#Category option:selected").val()}</td>
+
+</tr>
+`);
+
+            }
+            else {
+
+                editNode.children[0].innerText = $("#Category").val();
+                editNode.children[1].innerText = getStatus();
+                mode = 0;
+            }
+            $("#Category").val("");
+            $("#answer1").val("");
+            $("#answer2").val("");
+            $("#answer3").val("");
+            $("#answer4").val("");
+            $("#status").val("true");
+            $("[name='radio']").prop("checked", false);
+
+            $("#btnadd").val("Add");
+            $("#status").prop("checked", true);
+        })
+
+
+
+        $("#btnSubmit").click(function () {
+            var categories = [];
+
+            $('#tableCategories > tbody  >tr').each(function (index, tr) {
+
+                let correctAns = 0;
+                let answers = tr.children[5].children[0].children[1].children[0];
+                console.log(answers);
+                for (let i = 1; i <= answers.children.length; ++i) {
+                    if ($(answers.children[i - 1]).hasClass("active")) {
+                        correctAns = i;
+                        break;
+                    }
+                }
+
+                categories.push({
+                    Question: tr.children[1].innerHTML,
+                    Amount: tr.children[2].innerHTML,
+                    Time: tr.children[3].innerHTML,
+                    date: tr.children[4].innerHTML,
+                    Category: tr.children[8].innerHTML,
+                    CorrectAnswer: correctAns,
+                    status: (tr.children[6].innerHTML == "Available" ? true : false),
+                    KhuddarQuizAnswers: [
+                        { Answer: answers.children[0].innerText },
+                        { Answer: answers.children[1].innerText },
+                        { Answer: answers.children[2].innerText },
+                        { Answer: answers.children[3].innerText }
+                    ]
+                })
+
+            });
+
+            if (categories.length > 0) {
+                console.log(categories)
+                $.ajax({
+                    type: "POST",
+                    url: "/api/postquizes",
+                    headers: { 'Content-Type': 'application/json' },
+                    data: JSON.stringify(categories),
+                    contentType: "application/json",
+                    success: function (response) {
+                        toastr.success("Categories added successfully", "Success!", {
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            timeOut: 2e3
+                        });
+                        $("#tableCategories tbody").html("")
+
+                    },
+                    failure: function (response) {
+                        toastr.error("Opps Something wen't wrong", "Error!", {
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            timeOut: 2e3
+                        });
+
+                        //alert(response.responseText);
+                    },
+                    error: function (response) {
+                        toastr.error("Opps Something wen't wrong", "Error!", {
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            timeOut: 2e3
+                        });
+                    }
+                });
+            }
+
+        });
+
+    });
+
+</script>

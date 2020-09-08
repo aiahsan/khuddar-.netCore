@@ -1,0 +1,252 @@
+﻿@model KhuddarVS.Areas.Admin.Models.ArticleModel
+@{
+    ViewBag.title = "Articles";
+}
+@await Html.PartialAsync("_datatableScripts")
+@await Html.PartialAsync("_toastLayout")
+@await Html.PartialAsync("_titleBreadView", new string[] { "Articles", "Home", "" })
+<style>
+    .elp {
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        margin: 0;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Category Form</h4>
+                <p>Brand is an identifying mark burned on livestock or (especially in former times) criminals or slaves with a branding iron.</p>
+            </div>
+            <div class="card-body">
+                <form asp-action="articles" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" style="display:none">
+                        <label asp-for="Id" class="control-label"></label>
+                        <input asp-for="Id" class="form-control" />
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="title" class="control-label"></label>
+                        <input asp-for="title" class="form-control" />
+                        <span asp-validation-for="title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="articleType" class="control-label"></label>
+                        <input asp-for="articleType" class="form-control" />
+                        <span asp-validation-for="title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Article" class="control-label"></label>
+                        <input asp-for="Article" class="form-control" />
+                        <span asp-validation-for="Article" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="Image" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Video" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="Video" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <span asp-validation-for="Video" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit"  value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div >
+            <table id="DT_load">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <video style="width:100%" controls>
+                <source id="videoPlr" src="movie.mp4">
+            </video>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var dataTable;
+
+    function setStatusVal() {
+        let valStatus = $("#status").val();
+        if (valStatus == "true") {
+            $("#status").val(false);
+        }
+        else {
+            $("#status").val(true);
+        }
+    }
+
+    function getArticleType(val) {
+        if (val == 0)
+            return "Recomended Article"
+        else
+            return "Normal Article"
+    }
+
+    function setVideoSrc(src) {
+        $("videoPlr").attr("src", "/articleAssets/"+src);
+    }
+
+    $(document).ready(function () {
+
+        dataTable = $("#DT_load").DataTable({
+            "ajax": {
+                "url": "/Api/getArticles",
+                "type": "GET",
+                "datatype": "Json",
+                "dataSrc": ""
+            },
+            "columns": [
+               
+                { "data": "title", "width": "12.5%" },
+                {
+                    "data": "articleType",
+                    "render": function (data, type, row, meta) {
+                        return `<p class="elp"> ${getArticleType(data)}</p>`
+                    },
+                    "width": "12.5%",
+                },
+                
+                {
+                    "data": "article",
+                    "render": function (data, type, row, meta) {
+                        return `<p class="elp"> ${data}</p>`
+                    },
+                    "width": "12.5%",
+                },
+                {
+                    "data": "image",
+                    "render": function (data, type, row, meta) {
+                        return `<img style="width:40px;height:40px" src="/articleAssets/${data}"/>`
+                    }
+
+                },{
+                    "data": "videoLink",
+                    "render": function (data, type, row, meta) {
+                        return `<button onclick="setVideoSrc(${data})"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+View Video
+</button>`},
+                    "width": "12.5%",
+                },
+                { "data": "date", "width": "12.5%" },
+                {
+                    "data": "status",
+                    "render": function (data) {
+                        return (data == true ? "	Available" : "Not Available")
+                    },
+                    "width": "12.5%"
+                },
+                {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        return `<div class="d-flex justify-content-center"> <a class="btn btn-warning" style=" color: white; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" href="/admin/Categories/${data}">Edit</a> <a class="btn btn-danger" style=" color: white; border-radius: 0px;" onclick="deletebrand(${data},'${row.category}')">Delete</a> <a href="/admin/home/subCategory/${data}" class="btn btn-info" style=" border-top-left-radius: 0px; border-bottom-left-radius: 0px; color: white;  ">View</a> </div>`
+                    },
+                    "width": "12.5%",
+                }
+            ],
+            "language": {
+                "brandsTable": "No data found"
+            },
+            "width": "100%",
+        });
+    });
+    function deletebrand(val, Name) {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0CC27E',
+            cancelButtonColor: '#FF586B',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-success mr-5',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: `/api/deleteCategory?id=${val}`,
+                type: "GET",
+                datatype: "JSON",
+                data: '',
+                success: function (result) {
+                    switch (result) {
+
+                        case 1:
+                            {
+                                swal('Deleted!', `Category ${Name} has been deleted.`, 'success');
+                                dataTable.ajax.reload();
+                                break;
+                            }
+                        default:
+                            {
+                                swal('Error!', 'Opps something went wrong', 'error');
+                                break;
+
+                            }
+
+                    }
+                },
+                error: function (result) {
+                    swal('Error!', 'Opps something went wrong', 'error');
+
+                },
+            });
+
+        }, function (dismiss) {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
+                swal('Cancelled', `Brand ${Name} is safe :)`, 'error');
+            }
+        });
+    };
+
+
+
+
+</script>
+
+

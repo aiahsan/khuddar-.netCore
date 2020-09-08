@@ -1,0 +1,203 @@
+﻿@model KhuddarVsModals.Models.KhuddarQuizCategory
+
+@{
+    ViewData["Title"] = "category";
+}
+@await Html.PartialAsync("_toastLayout")
+
+
+@await Html.PartialAsync("_titleBreadView", new string[] { "Quiz Category", "Home", "" })
+
+
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                Quiz Category
+            </div>
+            <div class="card-body">
+                <form asp-action="category" id="formMain">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" style="display:none">
+                        <label asp-for="Id" class="control-label"></label>
+                        <input asp-for="Id" class="form-control" />
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Category" class="control-label"></label>
+                        <input asp-for="Category" class="form-control" />
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input onclick="setStatusVal()" class="form-check-input" asp-for="status" checked /> @Html.DisplayNameFor(model => model.status)
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <input id="btnadd" type="button" value="Add" class="btn btn-primary" />
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">Categories</div>
+            <div class="card-body">
+                <div class="table-responsive" style="max-height:300px">
+                    <table class="table table-striped" id="tableCategories">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Available</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div>
+                    <button id="btnSubmit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+<script>
+    //0:add 1:edit
+    var mode = 0;
+    var editNode;
+    function deletenode(val) {
+        $(val.parentNode.parentNode.parentNode).remove();
+
+    }
+    function setStatusVal() {
+        let valStatus = $("#status").val();
+        if (valStatus == "true") {
+            $("#status").val(false);
+        }
+        else {
+            $("#status").val(true);
+        }
+    }
+    function getStatus() {
+        if ($("#status").val() == "true")
+            return "Available"
+
+        return "Not Available"
+
+    }
+    function setNode(node) {
+        editNode = node.parentNode.parentNode.parentNode;
+        mode = 1;
+        $("#Category").val(editNode.children[0].innerText);
+        if (editNode.children[1].innerText == "Available") {
+            $("#status").val("true");
+            $("#status").prop("checked", true);
+        }
+        else {
+            $("#status").val("false");
+            $("#status").prop("checked", false);
+
+        }
+        $("#btnadd").val("Save");
+
+
+    }
+    $(document).ready(function () {
+
+
+        //function will be called on button click having id btnsave
+
+        $("#btnadd").click(function () {
+
+            if (mode == 0) {
+                $("#tableCategories tbody").append(`
+                           <tr>
+<td>${$("#Category").val()}</td>
+<td>${getStatus()}</td >
+
+<td>
+<div style="display:flex;"><button class="btn btn-info" style="color: white;border-top-right-radius: 0px;border-bottom-right-radius: 0px;" onclick="setNode(this)">Edit</button>
+
+<button class="btn btn-danger" style="color: white;border-top-left-radius: 0px;border-bottom-left-radius: 0px;" onclick="deletenode(this)">Delete</button>
+</div>
+ </td>
+</tr>
+`);
+
+            }
+            else {
+
+                editNode.children[0].innerText = $("#Category").val();
+                editNode.children[1].innerText = getStatus();
+                mode = 0;
+            }
+            $("#Category").val("");
+            $("#status").val("true");
+            $("#btnadd").val("Add");
+            $("#status").prop("checked", true);
+        })
+
+
+
+        $("#btnSubmit").click(function () {
+            var categories = [];
+            $('table > tbody  >tr').each(function (index, tr) {
+
+                categories.push({
+                    Category: tr.children[0].innerHTML,
+                    status: (tr.children[1].innerHTML == "Available" ? true : false),
+                })
+            });
+
+            if (categories.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/postcategory",
+                    headers: { 'Content-Type': 'application/json' },
+                    data: JSON.stringify(categories),
+                    contentType: "application/json",
+                    success: function (response) {
+                        toastr.success("Categories added successfully", "Success!", {
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            timeOut: 2e3
+                        });
+                        $("#tableCategories tbody").html("")
+
+                    },
+                    failure: function (response) {
+                        toastr.error("Opps Something wen't wrong", "Error!", {
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            timeOut: 2e3
+                        });
+
+                        //alert(response.responseText);
+                    },
+                    error: function (response) {
+                        toastr.error("Opps Something wen't wrong", "Error!", {
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            timeOut: 2e3
+                        });
+                    }
+                });
+            }
+
+        });
+
+    });
+
+</script> 

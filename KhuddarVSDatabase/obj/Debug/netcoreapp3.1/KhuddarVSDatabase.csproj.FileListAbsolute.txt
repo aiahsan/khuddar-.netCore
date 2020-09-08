@@ -1,0 +1,30 @@
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.deps.json
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.dll
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.csprojAssemblyReference.cache
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.AssemblyInfoInputs.cache
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.AssemblyInfo.cs
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVsModals.dll
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.runtimeconfig.json
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.runtimeconfig.dev.json
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.pdb
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVsModals.pdb
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.csproj.CoreCompileInputs.cache
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.csproj.CopyComplete
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.dll
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.pdb
+E:\Current Projects\Office new Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.genruntimeconfig.cache
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.deps.json
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.runtimeconfig.json
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.runtimeconfig.dev.json
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.dll
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVSDatabase.pdb
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVsModals.dll
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\bin\Debug\netcoreapp3.1\KhuddarVsModals.pdb
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.csprojAssemblyReference.cache
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.AssemblyInfoInputs.cache
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.AssemblyInfo.cs
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.csproj.CoreCompileInputs.cache
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.csproj.CopyComplete
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.dll
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.pdb
+F:\Office Projects\KhuddarVS\KhuddarVSDatabase\obj\Debug\netcoreapp3.1\KhuddarVSDatabase.genruntimeconfig.cache

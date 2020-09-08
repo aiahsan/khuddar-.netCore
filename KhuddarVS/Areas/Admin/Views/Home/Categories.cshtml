@@ -1,0 +1,242 @@
+﻿@model KhuddarVsModals.Models.KhuddarQuizCategory
+@{
+    ViewBag.title = "Categories";
+}
+@await Html.PartialAsync("_datatableScripts")
+@await Html.PartialAsync("_toastLayout")
+@await Html.PartialAsync("_titleBreadView", new string[] { "Quiz Categories", "Home", "" })
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="DT_load" style="width:100%" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Available Status</th>
+                                <th>Deleted Status</th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Category</th>
+                                <th>Available Status</th>
+                                <th>Deleted Status</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h4>Category Form</h4>
+                <p>Brand is an identifying mark burned on livestock or (especially in former times) criminals or slaves with a branding iron.</p>
+            </div>
+            <div class="card-body">
+                <form asp-action="category" id="formMain">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" style="display:none">
+                        <label asp-for="Id" class="control-label"></label>
+                        <input asp-for="Id" class="form-control" />
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Category" class="control-label"></label>
+                        <input asp-for="Category" class="form-control" />
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input onclick="setStatusVal()" class="form-check-input" asp-for="status" /> @Html.DisplayNameFor(model => model.status)
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <input id="btnSubmit" type="button" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    var dataTable;
+
+    function setStatusVal() {
+        let valStatus = $("#status").val();
+        if (valStatus == "true") {
+            $("#status").val(false);
+        }
+        else {
+            $("#status").val(true);
+        }
+    }
+    $("#btnSubmit").click(function () {
+
+        let categories = {
+            Category: $("#Category").val(),
+            status: $("#status").val(),
+            Id: $("#Id").val(),
+            deleteStatus: false
+        }
+        $.ajax({
+            type: "POST",
+            url: "/api/updatecategory",
+            headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify(categories),
+            contentType: "application/json",
+            success: function (response) {
+                toastr.success("Record Updated successfully", "Success!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+                $('#DT_load').DataTable().ajax.reload();
+
+
+
+            },
+            failure: function (response) {
+                toastr.error("Opps Something wen't wrong", "Error!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+
+                //alert(response.responseText);
+            },
+            error: function (response) {
+                toastr.error("Opps Something wen't wrong", "Error!", {
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    timeOut: 2e3
+                });
+            }
+        });
+
+
+    });
+
+    $(document).ready(function () {
+
+        dataTable = $("#DT_load").DataTable({
+            "ajax": {
+                "url": "/Api/getcategories",
+                "type": "GET",
+                "datatype": "Json",
+                "dataSrc": ""
+            },
+
+            "columns": [
+
+                /*
+                {
+                    "data": "category",
+                    "render": function (data, type, row, meta) {
+                        console.log(data)
+                        return `${data["productType"]}`
+                    }, "width": "33.3%"
+                },
+                */
+                { "data": "category", "width": "33.3%" },
+                {
+                    "data": "status",
+                    "render": function (data) {
+                        return (data == true ? "	Available" : "Not Available")
+                    },
+                    "width": "33.3%"
+                },
+                {
+                    "data": "deleteStatus",
+                    "render": function (data) {
+                        return (data == false ? "Active" : "Deleted")
+                    },
+                    "width": "33.3%"
+                },
+                {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        return `<div class="d-flex justify-content-center"> <a class="btn btn-warning" style=" color: white; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" href="/admin/Categories/${data}">Edit</a> <a class="btn btn-danger" style=" color: white; border-radius: 0px;" onclick="deletebrand(${data},'${row.category}')">Delete</a> <a href="/admin/home/subCategory/${data}" class="btn btn-info" style=" border-top-left-radius: 0px; border-bottom-left-radius: 0px; color: white;  ">View</a> </div>`
+                    },
+                    "width": "33.3%",
+                }
+            ],
+            "language": {
+                "brandsTable": "No data found"
+            },
+            "width": "100%",
+        });
+
+
+    });
+    function deletebrand(val, Name) {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0CC27E',
+            cancelButtonColor: '#FF586B',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-success mr-5',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            $.ajax({
+                url: `/api/deleteCategory?id=${val}`,
+                type: "GET",
+                datatype: "JSON",
+                data: '',
+                success: function (result) {
+                    switch (result) {
+
+                        case 1:
+                            {
+                                swal('Deleted!', `Category ${Name} has been deleted.`, 'success');
+                                dataTable.ajax.reload();
+                                break;
+                            }
+                        default:
+                            {
+                                swal('Error!', 'Opps something went wrong', 'error');
+                                break;
+
+                            }
+
+                    }
+                },
+                error: function (result) {
+                    swal('Error!', 'Opps something went wrong', 'error');
+
+                },
+            });
+
+        }, function (dismiss) {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
+                swal('Cancelled', `Brand ${Name} is safe :)`, 'error');
+            }
+        });
+    };
+
+
+
+
+</script>
+
+
